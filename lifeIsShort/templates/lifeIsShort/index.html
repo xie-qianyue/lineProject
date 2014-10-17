@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+<!--<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />-->
+
+{% if day_list %}
+    <ul>
+    {% for day in day_list %}
+		<p>{{ day }}
+		{% for activity in day.activities.all %}
+		<li>{{ activity.activity_type }} {{ activity.act_object }}</a></li>
+		{% endfor %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No records.</p>
+{% endif %}
