@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class ObjectType(models.Model):
     type_name = models.CharField(max_length=50)
@@ -14,21 +15,33 @@ class TypeLevelTwo(models.Model):
 class ActObject(models.Model):
     object_name = models.CharField(max_length=100)
     object_type = models.ForeignKey(ObjectType)
+    def __unicode__(self):
+        return self.object_name
 
 class ActivityType(models.Model):
     type_name = models.CharField(max_length=50)
     def __unicode__(self):
         return self.type_name
 
+class Day(models.Model):
+    date = models.DateField();
+    def __unicode__(self):
+        return self.date.strftime('%Y-%m-%d')
+
 class Activity(models.Model):
     activity_type = models.ForeignKey(ActivityType)
     act_object = models.ForeignKey(ActObject)
-    date = models.DateField();
-    hours = models.DecimalField(max_digits=5, decimal_places=2)
-    comment = models.CharField(max_length=400)
+    day = models.ForeignKey(Day, related_name='activities', null=True, blank=True)
+    hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    comment = models.CharField(max_length=400, null=True, blank=True)
 
-class Day(models.Model):
-    date = models.DateField();
+    class Meta:
+        unique_together = ('activity_type', 'act_object', 'day')
+    
+    def __unicode__(self):        
+        return self.activity_type.type_name + ' ' + self.act_object.object_name
+
+
 
 """
 class BookType(models.Model):
