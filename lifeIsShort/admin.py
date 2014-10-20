@@ -4,7 +4,7 @@ from lifeIsShort.models import TypeLevelTwo
 from lifeIsShort.models import ActObject
 from lifeIsShort.models import ActivityType
 from lifeIsShort.models import Activity
-from lifeIsShort.models import Day
+# from lifeIsShort.models import Day
 
 class ActObjectAdmin(admin.ModelAdmin):
     list_display = ('object_name', 'object_type')
@@ -20,4 +20,4 @@ admin.site.register(TypeLevelTwo)
 admin.site.register(ActObject, ActObjectAdmin)
 admin.site.register(ActivityType)
 admin.site.register(Activity, ActivityAdmin)
-admin.site.register(Day)
+# admin.site.register(Day)
