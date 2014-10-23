@@ -1,13 +1,36 @@
-{% load staticfiles %}
-
-<!--<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />-->
-
-{% if activity_list %}
-    <ul>
-		{% for activity in activity_list %}
-		<li>{{ activity.day }} : {{ activity.activity_type }} {{ activity.act_object }}</li>
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Life is short</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'lifeIsShort/SemanticUI/css/semantic.min.css' %}" /> 
+</head>
+<body>
+	<div>
+	</div>
+	<div>
+	{% if activity_dict %}
+		{% for type, activity_list in activity_dict.items %}
+		<h1 class="ui header"> {{ type }} </h1>
+		<div class="ui horizontal divider" ></div>
+		<div class="ui horizontal list">
+			{% for activity in activity_list %}
+			<div class="item">
+				<i class="checkmark icon"></i>
+				<div class="content">
+					<div class="header">{{ activity.day }} </div>
+					{{ activity.act_object }}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
 		{% endfor %}
-    </ul>
-{% else %}
-    <p>No records.</p>
-{% endif %}
+	{% else %}
+		<p>No records.</p>
+	{% endif %}
+	</div>
+	<div>
+	</div>
+</body>
+</html>
