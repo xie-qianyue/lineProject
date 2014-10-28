@@ -23,26 +23,33 @@ class ActivityType(models.Model):
     def __unicode__(self):
         return self.type_name
 
-"""
-class Day(models.Model):
-    date = models.DateField()
+class ActivityFrequency(models.Model):
+    times = models.IntegerField()
+    period = models.IntegerField()
+    class Meta:
+        unique_together = ('times', 'period')
     def __unicode__(self):
-        return self.date.strftime('%Y-%m-%d')
-"""
-
+        return str(self.times) + " time(s) per " + str(self.period) + " day(s)"
+        
 class Activity(models.Model):
     activity_type = models.ForeignKey(ActivityType)
     act_object = models.ForeignKey(ActObject)
-    day = models.DateField()
-    hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     comment = models.CharField(max_length=400, null=True, blank=True)
+    act_frequency = models.ForeignKey(ActivityFrequency)
     is_actif = models.BooleanField(default=True)
-
     class Meta:
-        unique_together = ('activity_type', 'act_object', 'day')
-    
+        unique_together = ('activity_type', 'act_object')    
     def __unicode__(self):        
         return self.activity_type.type_name + ' ' + self.act_object.object_name
+
+class Day(models.Model):
+    date = models.DateField()
+    activity = models.ForeignKey(Activity)
+    hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)    
+    class Meta:
+        unique_together = ('date', 'activity')
+    def __unicode__(self):
+        return self.date.strftime('%Y-%m-%d') + ' : ' + self.activity.__unicode__()
 
 """
 class BookType(models.Model):
