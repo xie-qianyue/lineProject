@@ -49,7 +49,7 @@ class Day(models.Model):
     class Meta:
         unique_together = ('date', 'activity')
     def __unicode__(self):
-        return self.date.strftime('%Y-%m-%d') + ' : ' + self.activity.__unicode__()
+        return self.date.strftime('%Y.%m.%d') + ' : ' + self.activity.__unicode__()
 
 """
 class BookType(models.Model):

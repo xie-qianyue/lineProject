@@ -4,7 +4,8 @@
 	<meta charset="utf-8" />
 	<title>Life is short</title>
 	{% load staticfiles %}
-	<link rel="stylesheet" type="text/css" href="{% static 'lifeIsShort/SemanticUI/css/semantic.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'lifeIsShort/SemanticUI/css/semantic.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'lifeIsShort/css/cal-heatmap.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'lifeIsShort/css/main.css' %}" /> 
 </head>
 <body id="mainPage">
@@ -16,21 +17,25 @@
 			Messages
 		</a>
     </div>
-  </div>
+	<div id="cal-heatmap" class="main container">
 	</div>
 	<div class="main container">
 	{% if activity_dict %}
 		{% for type, activity_list in activity_dict.items %}
-		<div>
-			<h1 class="ui header"> {{ type }} </h1>
-			<div class="ui divider" ></div>
+		<div class="myContainer">
+			<h1 class="ui medium dividing header"> {{ type }} </h1>
+			<!--<div class="ui divider" ></div>-->
 			<div class="ui horizontal list">
-				{% for activity, day in activity_list %}
+				{% for activity, day, is_today in activity_list %}
 				<div class="item">
-					<i class="large checkmark icon width40 pointer"></i>
+					{% if is_today %}
+					<i class="large blue checked checkbox icon widthMedium heightMedium"></i>
+					{% else %}
+					<i class="large checkmark icon widthMedium heightMedium pointer"></i>
+					{% endif %}
 					<div class="content">
 						<div class="header">{{ activity.act_object }}</div>
-						<span class="itemDate">{{ day.0.date|date:"Y/m/d" }}</span>
+						<span class="itemDate">{{ day|date:"Y.m.d" }}</span>
 					</div>
 				</div>
 				{% endfor %}
@@ -44,8 +49,10 @@
 	<div>
 	</div>
 	<script src="{% static 'lifeIsShort/js/jquery-1.11.1.js' %}" type="text/javascript"></script>
-	<script src="{% static 'lifeIsShort/SemanticUI/javascript/semantic.js' %}" type="text/javascript"></script>
-	<script src="{% static 'lifeIsShort/js/main.js' %}" type="text/javascript"></script>
+	<script src="{% static 'lifeIsShort/SemanticUI/javascript/semantic.min.js' %}" type="text/javascript"></script>	
+	<script src="{% static 'lifeIsShort/js/d3.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'lifeIsShort/js/cal-heatmap.min.js' %}" type="text/javascript"></script>
 	<script src="{% static 'lifeIsShort/js/render.js' %}" type="text/javascript"></script>
+	<script src="{% static 'lifeIsShort/js/main.js' %}" type="text/javascript"></script>
 </body>
 </html>
