@@ -13,13 +13,13 @@ class TypeLevelTwo(models.Model):
         return self.type_name
 
 class ActObject(models.Model):
-    object_name = models.CharField(max_length=100)
+    object_name = models.CharField(max_length=100, unique=True)
     object_type = models.ForeignKey(ObjectType)
     def __unicode__(self):
         return self.object_name
 
 class ActivityType(models.Model):
-    type_name = models.CharField(max_length=50)
+    type_name = models.CharField(max_length=50, unique=True)
     def __unicode__(self):
         return self.type_name
 
