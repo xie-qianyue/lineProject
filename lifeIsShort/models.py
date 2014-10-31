@@ -51,6 +51,12 @@ class Day(models.Model):
     def __unicode__(self):
         return self.date.strftime('%Y.%m.%d') + ' : ' + self.activity.__unicode__()
 
+class GeneralViewReport(models.Model):
+    date = models.DateField(unique=True)
+    value = models.IntegerField()
+    def __unicode__(self):
+        return str(self.value) + " activity(s) on " + self.date.strftime('%Y.%m.%d')
+
 """
 class BookType(models.Model):
     type_name = models.CharField(max_length=50)
