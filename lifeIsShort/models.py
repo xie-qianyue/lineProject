@@ -37,6 +37,7 @@ class Activity(models.Model):
     comment = models.CharField(max_length=400, null=True, blank=True)
     act_frequency = models.ForeignKey(ActivityFrequency)
     is_actif = models.BooleanField(default=True)
+    is_display_in_general_report = models.BooleanField(default=True)
     class Meta:
         unique_together = ('activity_type', 'act_object')    
     def __unicode__(self):        
