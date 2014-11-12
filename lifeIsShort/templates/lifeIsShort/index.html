@@ -31,16 +31,22 @@
 			<h1 class="ui medium dividing header"> {{ type }} </h1>
 			<!--<div class="ui divider" ></div>-->
 			<div class="ui horizontal list">
-				{% for activity, day, is_today in activity_list %}
+				{% for activity, day, is_today, is_done in activity_list %}
 				<div class="item">
 					{% if is_today %}
-					<i class="large blue checked checkbox icon widthMedium heightMedium"></i>
+					<i class="large checked checkbox icon widthMedium heightMedium"></i>
 					{% else %}
 					<i class="large checkmark icon widthMedium heightMedium pointer"></i>
 					{% endif %}
 					<div class="content">
-						<div class="header">{{ activity.act_object }}</div>
-						<span class="itemDate">{{ day|date:"Y.m.d" }}</span>
+						<div class="header">
+							{% if is_done %}
+							<span>{{ activity.act_object }}</span>
+							{% else %}
+							<span class="notDone">{{ activity.act_object }}</span>
+							{% endif %}
+						</div>
+							<span class="itemDate">{{ day|date:"Y.m.d" }}</span>
 					</div>
 				</div>
 				{% endfor %}

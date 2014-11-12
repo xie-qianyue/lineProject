@@ -4,6 +4,7 @@ from lifeIsShort.models import Activity
 from lifeIsShort.models import ActivityType
 from lifeIsShort.models import ActObject
 from lifeIsShort.models import GeneralViewReport
+from lifeIsShort.util.MyDateUtil import MyDateUtil
 from django.utils import timezone
 from datetime import date
 import json
@@ -16,7 +17,7 @@ def index(request):
 	activity_dict :
     key : activity_type
     value : a list of activity of this type, element in the list is a tuple
-    tuple : (activity, day set of this activity(only the most recent date is present), flag indicate if the recent date == today)
+    tuple : (activity, day set of this activity(only the most recent date is present), flag indicate if the recent date == today, flag indicate if the activity reaches the frequency)
     """
 	for activity in activity_list:
 		if activity.activity_type.type_name not in activity_dict:
@@ -26,7 +27,11 @@ def index(request):
 		is_today = False                
 		if(recent_date == today):
 			is_today = True
-		activity_dict[activity.activity_type.type_name].append((activity, recent_date, is_today))
+		is_done = False
+		if(get_nb_times_act_by_period(activity) >= activity.act_frequency.times):
+			is_done = True
+		# import pdb;pdb.set_trace()		
+		activity_dict[activity.activity_type.type_name].append((activity, recent_date, is_today, is_done))
 	
 	# import pdb;pdb.set_trace()	
 	context = {'activity_dict' : activity_dict
@@ -62,7 +67,8 @@ def add_activity(request):
 		)
 
 def get_general_report(request):
-	first_day_year = date(date.today().year,1,1)	
+	today = timezone.now().date()
+	first_day_year = date(today.year,1,1)	
 	report_list = GeneralViewReport.objects.filter(date__gt=first_day_year)
 	
 	response_data = {}
@@ -75,3 +81,14 @@ def get_general_report(request):
 		json.dumps(response_data),
 		content_type="application/json"
 	)
+
+def get_nb_times_act_by_period(activity):
+	'''
+	get number of times of an activity
+	this method may be moved somewhere 
+	'''
+	today = timezone.now().date()
+	period = activity.act_frequency.period
+	first_day, last_day = MyDateUtil.get_first_and_last_day(today, period)
+	# import pdb;pdb.set_trace()
+	return Day.objects.filter(activity=activity, date__gte=first_day, date__lte=last_day).count()

@@ -1,0 +1,36 @@
+body#mainPage {
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+	background: #FCFCFC url(../images/bg.jpg) repeat;
+	margin: 0px;
+	padding: 0px;
+	color: #555555;
+	min-width: 320px;
+}
+
+#mainPage .main.container {
+	position: relative;
+	padding-top: 70px;
+	width: 1000px;
+	margin: 0px auto;
+}
+
+.widthMedium {
+	width : 40px !important;
+}
+
+.heightMedium {
+	height : 30px !important;
+}
+
+.pointer{
+	cursor : pointer;
+}
+
+.myContainer{
+	margin-bottom: 15px;
+}
+
+.notDone{
+	background-color: #F4A460;
+	color : white;
+}
