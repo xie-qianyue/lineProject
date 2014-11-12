@@ -43,10 +43,10 @@
 							{% if is_done %}
 							<span>{{ activity.act_object }}</span>
 							{% else %}
-							<span class="notDone">{{ activity.act_object }}</span>
+							<span class="notDone link" data-content="Hello, I am a pop-up.">{{ activity.act_object }}</span>
 							{% endif %}
 						</div>
-							<span class="itemDate">{{ day|date:"Y.m.d" }}</span>
+						<span class="itemDate">{{ day|date:"Y.m.d" }}</span>
 					</div>
 				</div>
 				{% endfor %}

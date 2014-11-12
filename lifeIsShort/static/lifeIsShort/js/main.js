@@ -1,6 +1,7 @@
  $(document).ready(function () {
 	renderIcon();
-	renderCalHeatmap();
+	renderPopup();
+	renderCalHeatmap();	
 });
 
 /**
@@ -8,7 +9,7 @@
  */
 function addActivity(icon){
 	var activityType = icon.parents('.horizontal.list').siblings('.header').text().trim();
-	var activityObject = icon.siblings('.content').children('.header').text();
+	var activityObject = icon.siblings('.content').children('.header').text().trim();
 	var csrfToken = getCookie('csrftoken');
 	$.ajax({
 		url : 'add_activity/',
@@ -20,6 +21,7 @@ function addActivity(icon){
 			icon.addClass('checked checkbox large');
 			icon.siblings('.content').children('.itemDate').html(data.today);
 			icon.unbind("mouseover mouseout");
+			icon.siblings('.content').find('span').removeClass('notDone');
 		}
 	}).fail(function() {
 		// TODO

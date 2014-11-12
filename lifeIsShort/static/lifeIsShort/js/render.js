@@ -18,6 +18,14 @@ function renderIcon(){
 }
 
 /**
+ *  Rendering the popups
+ */
+function renderPopup(){
+	// just initializing
+	$('.notDone').popup();
+}
+
+/**
  *  Rendering the cal-heatmap
  */
 function renderCalHeatmap(){

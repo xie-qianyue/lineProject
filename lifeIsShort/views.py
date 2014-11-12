@@ -27,9 +27,7 @@ def index(request):
 		is_today = False                
 		if(recent_date == today):
 			is_today = True
-		is_done = False
-		if(get_nb_times_act_by_period(activity) >= activity.act_frequency.times):
-			is_done = True
+		is_done = is_act_done(activity)
 		# import pdb;pdb.set_trace()		
 		activity_dict[activity.activity_type.type_name].append((activity, recent_date, is_today, is_done))
 	
@@ -54,7 +52,8 @@ def add_activity(request):
 		today_string = today.strftime("%Y.%m.%d")
 		response_data["result"] = "OK"
 		response_data["today"] = today_string
-        
+                response_data["is_done"] = is_act_done(activity_model)
+                
 		return HttpResponse(
 			json.dumps(response_data),
 			content_type="application/json"
@@ -85,10 +84,20 @@ def get_general_report(request):
 def get_nb_times_act_by_period(activity):
 	'''
 	get number of times of an activity
-	this method may be moved somewhere 
+	this method may be moved somewhere else
 	'''
 	today = timezone.now().date()
 	period = activity.act_frequency.period
 	first_day, last_day = MyDateUtil.get_first_and_last_day(today, period)
 	# import pdb;pdb.set_trace()
 	return Day.objects.filter(activity=activity, date__gte=first_day, date__lte=last_day).count()
+
+def is_act_done(activity):
+        '''
+        check whether the activity has reached the frequency
+        this method may be moved somewhere else
+        '''
+	is_done = False
+	if(get_nb_times_act_by_period(activity) >= activity.act_frequency.times):
+		is_done = True
+	return is_done
