@@ -21,8 +21,29 @@ function renderIcon(){
  *  Rendering the popups
  */
 function renderPopup(){
-	// just initializing
-	$('.notDone').popup();
+	var csrfToken = getCookie('csrftoken');
+
+	$('.notDone').each(function() {
+		var activity = $(this);
+    	var activityType = activity.parents('.horizontal.list').siblings('.header').text().trim();
+		var activityObject = activity.text().trim();
+
+		$.ajax({
+			url : 'get_frequency_text/',
+			type : 'POST',
+			data : {activity_type:activityType,activity_object:activityObject,csrfmiddlewaretoken:csrfToken}
+		}).done(function(data){
+			if(data.result=='OK'){
+				var contentText = data.frequency_text;
+				// initializing
+				activity.popup({
+					content: contentText
+				})			
+			}
+		}).fail(function() {
+			// TODO
+		});
+	});
 }
 
 /**
@@ -58,4 +79,23 @@ function renderCalHeatmap(){
 		}	
 	});
 	// calendar.rewind();
+}
+
+/**
+ *  Using jQuery to get the csft token 
+ */
+function getCookie(name){
+	var cookieValue = null;
+	if(document.cookie&&document.cookie!=''){
+		var cookies = document.cookie.split(';');
+		for(var i=0;i<cookies.length;i++){
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if(cookie.substring(0,name.length+1)==(name+'=')){
+				cookieValue=decodeURIComponent(cookie.substring(name.length+1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
 }

@@ -81,6 +81,34 @@ def get_general_report(request):
 		content_type="application/json"
 	)
 
+def get_frequency_text(request):
+	'''
+	get the text of frequency
+	call by ajax
+	'''
+	response_data = {}
+	if request.method == "POST":
+		activity_type = request.POST.get("activity_type")            
+		activity_type_model = ActivityType.objects.get(type_name=activity_type)
+		activity_object = request.POST.get("activity_object")             
+		act_object_model = ActObject.objects.get(object_name=activity_object)             
+		activity_model = Activity.objects.get(activity_type=activity_type_model, act_object=act_object_model)
+		frequency_string = activity_model.act_frequency.__unicode__()
+		response_data["result"] = "OK"
+		response_data["frequency_text"] = "Your plan is " + frequency_string
+
+		return HttpResponse(
+			json.dumps(response_data),
+			content_type="application/json"
+		)				
+	else:
+		response_data["result"] = "KO"
+		return HttpResponse(
+			json.dumps(response_data),
+			content_type="application/json"
+		)	
+	
+
 def get_nb_times_act_by_period(activity):
 	'''
 	get number of times of an activity
@@ -93,10 +121,10 @@ def get_nb_times_act_by_period(activity):
 	return Day.objects.filter(activity=activity, date__gte=first_day, date__lte=last_day).count()
 
 def is_act_done(activity):
-        '''
-        check whether the activity has reached the frequency
-        this method may be moved somewhere else
-        '''
+	'''
+	check whether the activity has reached the frequency
+	this method may be moved somewhere else
+	'''
 	is_done = False
 	if(get_nb_times_act_by_period(activity) >= activity.act_frequency.times):
 		is_done = True

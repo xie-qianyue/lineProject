@@ -21,7 +21,10 @@ function addActivity(icon){
 			icon.addClass('checked checkbox large');
 			icon.siblings('.content').children('.itemDate').html(data.today);
 			icon.unbind("mouseover mouseout");
-			icon.siblings('.content').find('span').removeClass('notDone');
+			if(data.is_done!='true'){				
+				icon.siblings('.content').find('span').popup('destroy');	
+				icon.siblings('.content').find('span').removeClass('notDone');			
+			}	
 		}
 	}).fail(function() {
 		// TODO
