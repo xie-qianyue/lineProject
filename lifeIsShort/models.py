@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from lifeIsShort.util.TimeUnitEnum import TimeUnitEnum
 
 class ObjectType(models.Model):
     type_name = models.CharField(max_length=50)
@@ -29,7 +30,7 @@ class ActivityFrequency(models.Model):
     class Meta:
         unique_together = ('times', 'period')
     def __unicode__(self):
-        return str(self.times) + " time(s) per " + str(self.period) + " day(s)"
+        return str(self.times) + " time(s) per " + TimeUnitEnum.get_time_unit_name(self.period)
         
 class Activity(models.Model):
     activity_type = models.ForeignKey(ActivityType)

@@ -34,7 +34,7 @@ function renderPopup(){
 			data : {activity_type:activityType,activity_object:activityObject,csrfmiddlewaretoken:csrfToken}
 		}).done(function(data){
 			if(data.result=='OK'){
-				var contentText = data.frequency_text;
+				var contentText = data.plan_text + '<br>' +data.done_text;
 				// initializing
 				activity.popup({
 					content: contentText

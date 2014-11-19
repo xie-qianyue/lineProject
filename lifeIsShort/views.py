@@ -5,6 +5,7 @@ from lifeIsShort.models import ActivityType
 from lifeIsShort.models import ActObject
 from lifeIsShort.models import GeneralViewReport
 from lifeIsShort.util.MyDateUtil import MyDateUtil
+from lifeIsShort.util.TimeUnitEnum import TimeUnitEnum
 from django.utils import timezone
 from datetime import date
 import json
@@ -93,9 +94,13 @@ def get_frequency_text(request):
 		activity_object = request.POST.get("activity_object")             
 		act_object_model = ActObject.objects.get(object_name=activity_object)             
 		activity_model = Activity.objects.get(activity_type=activity_type_model, act_object=act_object_model)
-		frequency_string = activity_model.act_frequency.__unicode__()
+
+		plan_string = activity_model.act_frequency.__unicode__()
+                done_string = str(get_nb_times_act_by_period(activity_model)) + " time(s) " + TimeUnitEnum.get_this_time_unit_name(activity_model.act_frequency.period)
+		
 		response_data["result"] = "OK"
-		response_data["frequency_text"] = "Your plan is " + frequency_string
+		response_data["plan_text"] = "Your plan is " + plan_string
+		response_data["done_text"] = "You have done " + done_string
 
 		return HttpResponse(
 			json.dumps(response_data),
